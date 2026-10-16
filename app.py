@@ -42,8 +42,166 @@ def cargar_datos():
 
 df_puntos = cargar_datos()
 
+# --- SISTEMA DE IDIOMAS ---
+IDIOMAS = {
+    "es": {
+        "titulo": "🗺️ GeoRamón Explorer - Prospección Aurífera",
+        "capas": "Capas",
+        "base": "Base",
+        "capas_geo": "📁 Capas Geológicas / Concesiones",
+        "subir_kml": "Subir KML o GeoJSON",
+        "analisis": "Análisis",
+        "filtrar_potencial": "Filtrar por Potencial",
+        "todos": "Todos",
+        "registrar_punto": "➕ Registrar Punto",
+        "nombre_zona": "Nombre de la zona",
+        "tipo_deposito": "Tipo de depósito",
+        "potencial_estimado": "Potencial estimado",
+        "latitud": "Latitud (Y)",
+        "longitud": "Longitud (X)",
+        "observaciones": "Observaciones de campo",
+        "guardar": "Guardar Punto de Interés",
+        "punto_seleccionado": "Punto Seleccionado",
+        "hacer_clic": "Haz clic en un marcador del mapa para habilitar su edición o análisis.",
+        "nombre_zona_label": "Nombre de la Zona",
+        "tipo_terreno": "Tipo de Terreno",
+        "coordenadas": "Coordenadas Exactas",
+        "nivel_potencial": "Nivel de Potencial",
+        "alertas_obs": "Alertas / Observaciones de Terreno",
+        "actualizar": "Actualizar Punto",
+        "eliminar": "Eliminar Punto",
+        "analisis_geo": "🧠 Análisis Geológico Personalizado",
+        "prompt_info": "📋 Prompt pre-rellenado para IA — Copia el texto, pesa en tu IA + adjunta captura",
+        "copia_prompt": "Copia este prompt y pégalo en ChatGPT/Gemini/Claude:",
+        "limpiar_sel": "🔄 Limpiar Selección",
+        "registro_puntos": "📋 Registro Local de Puntos de Interés",
+        "exportar": "📥 Exportar Datos",
+        "csv_filtrado": "📋 Filtrado",
+        "csv_todos": "📊 Todos los Puntos",
+        "geojson_export": "🗺️ GeoJSON (Todos los Puntos)",
+        "ias_recomendadas": "💡 IAs Recomendadas para Análisis",
+        "instrucciones": "ℹ️ Instrucciones de Uso",
+    },
+    "en": {
+        "titulo": "🗺️ GeoRamón Explorer - Gold Prospecting",
+        "capas": "Layers",
+        "base": "Base",
+        "capas_geo": "📁 Geological Layers / Concessions",
+        "subir_kml": "Upload KML or GeoJSON",
+        "analisis": "Analysis",
+        "filtrar_potencial": "Filter by Potential",
+        "todos": "All",
+        "registrar_punto": "➕ Register Point",
+        "nombre_zona": "Zone Name",
+        "tipo_deposito": "Deposit Type",
+        "potencial_estimado": "Estimated Potential",
+        "latitud": "Latitude (Y)",
+        "longitud": "Longitude (X)",
+        "observaciones": "Field Observations",
+        "guardar": "Save Point of Interest",
+        "punto_seleccionado": "Selected Point",
+        "hacer_clic": "Click on a map marker to enable editing or analysis.",
+        "nombre_zona_label": "Zone Name",
+        "tipo_terreno": "Terrain Type",
+        "coordenadas": "Exact Coordinates",
+        "nivel_potencial": "Potential Level",
+        "alertas_obs": "Alerts / Field Observations",
+        "actualizar": "Update Point",
+        "eliminar": "Delete Point",
+        "analisis_geo": "🧠 Personalized Geological Analysis",
+        "prompt_info": "📋 Pre-filled prompt for AI — Copy the text, paste in your AI + attach screenshot",
+        "copia_prompt": "Copy this prompt and paste it in ChatGPT/Gemini/Claude:",
+        "limpiar_sel": "🔄 Clear Selection",
+        "registro_puntos": "📋 Local Register of Points of Interest",
+        "exportar": "📥 Export Data",
+        "csv_filtrado": "📋 Filtered",
+        "csv_todos": "📊 All Points",
+        "geojson_export": "🗺️ GeoJSON (All Points)",
+        "ias_recomendadas": "💡 Recommended AIs for Analysis",
+        "instrucciones": "ℹ️ Usage Instructions",
+    }
+}
+
+if "idioma" not in st.session_state:
+    st.session_state.idioma = "es"
+
+t = IDIOMAS[st.session_state.idioma]
+
 # --- INTERFAZ DE USUARIO ---
-st.title("🗺️ GeoRamón Explorer - Prospección Aurífera")
+col_titulo, col_idioma = st.columns([0.9, 0.1])
+with col_titulo:
+    st.title(t["titulo"])
+with col_idioma:
+    idioma_sel = st.selectbox("🌐", ["Español", "English"], 
+                              index=0 if st.session_state.idioma == "es" else 1,
+                              key="idioma_selector")
+    st.session_state.idioma = "es" if idioma_sel == "Español" else "en"
+    if st.session_state.idioma != "es":
+        st.rerun()
+
+# --- VENTANA FLOTANTE DE INSTRUCCIONES ---
+with st.sidebar:
+    with st.expander(t["instrucciones"], expanded=False):
+        if st.session_state.idioma == "es":
+            st.markdown("""
+            ### Cómo usar GeoRamón Explorer
+
+            **1️⃣ Registrar un punto**
+            - Completa el formulario en el panel izquierdo
+            - Nombre (obligatorio), Tipo, Potencial, Coordenadas
+            - Presiona "Guardar Punto de Interés"
+
+            **2️⃣ Editar o eliminar**
+            - Haz clic en un marcador del mapa
+            - Modifica los datos en el panel derecho
+            - Presiona "Actualizar" o "Eliminar"
+
+            **3️⃣ Cargar capas geológicas**
+            - Sube KML o GeoJSON en "Capas Geológicas"
+            - Se renderizarán automáticamente
+
+            **4️⃣ Análisis con IA**
+            - Selecciona un punto → verás el prompt
+            - Cópia el texto (Ctrl+A → Ctrl+C)
+            - Abre tu IA favorita → pega (Ctrl+V)
+            - Adjunta captura de pantalla (Win+Shift+S)
+            - IA genera análisis técnico en 3 puntos
+
+            **5️⃣ Exportar datos**
+            - CSV Filtrado: solo los puntos visibles
+            - CSV Todos: todos tus puntos
+            - GeoJSON: compatible con QGIS/ArcGIS
+            """)
+        else:
+            st.markdown("""
+            ### How to use GeoRamón Explorer
+
+            **1️⃣ Register a point**
+            - Fill out the form in the left panel
+            - Name (required), Type, Potential, Coordinates
+            - Press "Save Point of Interest"
+
+            **2️⃣ Edit or delete**
+            - Click on a marker on the map
+            - Modify data in the right panel
+            - Press "Update" or "Delete"
+
+            **3️⃣ Load geological layers**
+            - Upload KML or GeoJSON in "Geological Layers"
+            - They will render automatically
+
+            **4️⃣ Analysis with AI**
+            - Select a point → you'll see the prompt
+            - Copy the text (Ctrl+A → Ctrl+C)
+            - Open your favorite AI → paste (Ctrl+V)
+            - Attach screenshot (Win+Shift+S)
+            - AI generates technical analysis in 3 points
+
+            **5️⃣ Export data**
+            - Filtered CSV: only visible points
+            - All CSV: all your points
+            - GeoJSON: compatible with QGIS/ArcGIS
+            """)
 
 # Estructura de 3 columnas principales (Panel Izquierdo | Mapa Central | Panel Derecho)
 col_izquierda, col_mapa, col_derecha = st.columns([2.2, 4.3, 2.5])
@@ -255,6 +413,30 @@ Evita respuestas genéricas o ambiguas; habla con base en la metalogenia real de
             if st.button("🤖 Claude", use_container_width=True):
                 webbrowser.open_new_tab("https://claude.ai")
                 st.success("✓ Claude abierto — pega el prompt de arriba")
+        
+        st.markdown("---")
+        st.subheader(t["ias_recomendadas"])
+        
+        ias_list = [
+            ("ChatGPT", "https://chatgpt.com", "💬"),
+            ("Google Gemini", "https://gemini.google.com", "✨"),
+            ("Claude", "https://claude.ai", "🤖"),
+            ("Grok", "https://grok.com", "⚡"),
+            ("Perplexity AI", "https://www.perplexity.ai", "🔍"),
+            ("Mistral AI", "https://chat.mistral.ai", "🎯"),
+            ("DeepSeek", "https://chat.deepseek.com", "🧠"),
+            ("Cohere", "https://coral.cohere.com", "📊"),
+            ("LLaMA 3", "https://www.llama.com", "🦙"),
+            ("Anthropic", "https://www.anthropic.com", "🔬"),
+        ]
+        
+        cols_ias = st.columns(2)
+        for idx, (nombre, url, emoji) in enumerate(ias_list):
+            col = cols_ias[idx % 2]
+            with col:
+                if st.button(f"{emoji} {nombre}", use_container_width=True, key=f"ia_{nombre}"):
+                    webbrowser.open_new_tab(url)
+                    st.success(f"✓ {nombre} abierto")
             
     else:
         st.info("Haz clic en un marcador del mapa para habilitar su edición o análisis.")
