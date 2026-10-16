@@ -1,0 +1,109 @@
+═══════════════════════════════════════════════════════════════
+  SUBIR ARCHIVOS A GITHUB - GEORAMON EXPLORER
+═══════════════════════════════════════════════════════════════
+
+Tu repo ya existe en: https://github.com/armandocoroneo/georamon-explorer
+
+OPCIÓN 1: Usando Git desde terminal (recomendado)
+─────────────────────────────────────────────────
+
+1. Abre PowerShell o CMD en Windows
+
+2. Crea una carpeta local para el proyecto:
+   cd Desktop
+   mkdir georamon-explorer
+   cd georamon-explorer
+
+3. Clona el repo vacío:
+   git clone https://github.com/armandocoroneo/georamon-explorer.git .
+
+4. Copia estos archivos a esa carpeta:
+   - app.py
+   - requirements.txt
+   - README.md
+   - CAMBIOS_REALIZADOS.md
+   - .gitignore
+
+5. Verifica que estén:
+   git status
+
+6. Agrega todos los archivos:
+   git add .
+
+7. Crea un commit:
+   git commit -m "Inicial: GeoRamón Explorer v1.0"
+
+8. Sube a GitHub:
+   git push origin main
+
+¡Listo! Los archivos aparecerán en GitHub en 1-2 segundos.
+
+
+OPCIÓN 2: Manualmente por interfaz GitHub (más lento)
+──────────────────────────────────────────────────────
+
+1. Ve a https://github.com/armandocoroneo/georamon-explorer
+
+2. Clic en "Add file" → "Upload files"
+
+3. Selecciona estos archivos:
+   ✓ app.py
+   ✓ requirements.txt
+   ✓ README.md
+   ✓ CAMBIOS_REALIZADOS.md
+   ✓ .gitignore
+
+4. Escribe mensaje: "Inicial: GeoRamón Explorer v1.0"
+
+5. Clic "Commit changes"
+
+¡Listo! Aparecerán en GitHub al instante.
+
+
+VER LOS ARCHIVOS EN GITHUB
+──────────────────────────
+
+Una vez subidos, abre:
+https://github.com/armandocoroneo/georamon-explorer
+
+Deberías ver:
+├── app.py
+├── requirements.txt
+├── README.md
+├── CAMBIOS_REALIZADOS.md
+└── .gitignore
+
+
+DESPLEGAR EN STREAMLIT CLOUD (OPCIONAL - GRATUITO)
+───────────────────────────────────────────────────
+
+1. Ve a https://streamlit.io/cloud
+
+2. Clic en "New app"
+
+3. Conecta tu cuenta GitHub (autoriza si es primera vez)
+
+4. Selecciona:
+   Repository: armandocoroneo/georamon-explorer
+   Branch: main
+   File: app.py
+
+5. Clic "Deploy"
+
+6. Espera 1-2 minutos → Streamlit Cloud deployará tu app
+
+7. Recibirás un link público tipo:
+   https://georamon-explorer.streamlit.app
+
+¡Tu app está en línea y cualquiera puede usarla sin instalar nada!
+
+
+NOTAS
+─────
+
+- Los datos (puntos) se guardan en el navegador del usuario, no en servidor
+- El CSV "puntos_prospeccion.csv" se genera localmente en cada navegador
+- No hay costo para Streamlit Cloud (con límites de uso)
+- El código está público en GitHub para que otros lo descarguen
+
+═══════════════════════════════════════════════════════════════
